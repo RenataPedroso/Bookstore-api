@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Category implements Serializable{
@@ -20,6 +21,7 @@ public class Category implements Serializable{
 	private String name;
 	private String description;
 	
+	@OneToMany(mappedBy = "category")
 	private List<Book> books = new ArrayList<>();
 
 	public Category() {
