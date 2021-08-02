@@ -10,7 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class Book implements Serializable{
+public class Book implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	@Id
@@ -19,7 +19,7 @@ public class Book implements Serializable{
 	private String title;
 	private String autor_name;
 	private String text;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "category_id")
 	private Category category;
