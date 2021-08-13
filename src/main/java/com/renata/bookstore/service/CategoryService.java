@@ -28,27 +28,38 @@ public class CategoryService {
 
 	@Autowired
 	private CategoryRepository repository;
-
+	
+	//procurar categoria por id
 	public Category findById(Integer id) {
 		Optional<Category> obj = repository.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
 				"Objeto não encontrado! || Id: " + id + " || Tipo do objeto: " + Category.class.getName()));
 	}
 	
+	//mostrar todas as categorias
 	public List<Category> findAll(){
 		return repository.findAll();
 	}
 	
+	//criar categoria
 	public Category create(Category obj) {
 		obj.setId(null);
 		return repository.save(obj);
 	}
 	
+	//alterar categoria
 	public Category update(Integer id, CategoryDTO objDto) {
 		Category obj = findById(id);
 		obj.setName(objDto.getName());
 		obj.setDescription(objDto.getDescription());
 		return repository.save(obj);
+	}
+	
+	//deletar categoria por id
+	public Category delete(Integer id) {
+		findById(id);
+		repository.deleteById(id);
+		return null;
 	}
 
 }
