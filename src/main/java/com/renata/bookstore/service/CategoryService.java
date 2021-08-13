@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.renata.bookstore.domain.Category;
+import com.renata.bookstore.dtos.CategoryDTO;
 import com.renata.bookstore.repositories.CategoryRepository;
 import com.renata.bookstore.service.exceptions.ObjectNotFoundException;
 
@@ -40,6 +41,13 @@ public class CategoryService {
 	
 	public Category create(Category obj) {
 		obj.setId(null);
+		return repository.save(obj);
+	}
+	
+	public Category update(Integer id, CategoryDTO objDto) {
+		Category obj = findById(id);
+		obj.setName(objDto.getName());
+		obj.setDescription(objDto.getDescription());
 		return repository.save(obj);
 	}
 
