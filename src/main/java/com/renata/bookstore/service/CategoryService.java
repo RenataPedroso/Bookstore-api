@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.renata.bookstore.domain.Category;
@@ -28,38 +29,42 @@ public class CategoryService {
 
 	@Autowired
 	private CategoryRepository repository;
-	
-	//procurar categoria por id
+
+	// procurar categoria por id
 	public Category findById(Integer id) {
 		Optional<Category> obj = repository.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
 				"Objeto não encontrado! || Id: " + id + " || Tipo do objeto: " + Category.class.getName()));
 	}
-	
-	//mostrar todas as categorias
-	public List<Category> findAll(){
+
+	// mostrar todas as categorias
+	public List<Category> findAll() {
 		return repository.findAll();
 	}
-	
-	//criar categoria
+
+	// criar categoria
 	public Category create(Category obj) {
 		obj.setId(null);
 		return repository.save(obj);
 	}
-	
-	//alterar categoria
+
+	// alterar categoria
 	public Category update(Integer id, CategoryDTO objDto) {
 		Category obj = findById(id);
 		obj.setName(objDto.getName());
 		obj.setDescription(objDto.getDescription());
 		return repository.save(obj);
 	}
-	
-	//deletar categoria por id
-	public Category delete(Integer id) {
+
+	// deletar categoria por id
+	public void delete(Integer id) {
 		findById(id);
-		repository.deleteById(id);
-		return null;
+		try {
+			repository.deleteById(id);
+		} catch (DataIntegrityViolationException e) {
+			throw new com.renata.bookstore.service.exceptions.DataIntegrityViolationException(
+					"Sua categoria não pode ser deletada, pois possui livros associados a ela!! :/");
+		}
 	}
 
 }
