@@ -19,14 +19,30 @@ public class BookService {
 	@Autowired
 	private CategoryService categoryService;
 	
+	//procurar livro por id
 	public Book findById(Integer id) {
 		Optional<Book> obj = repository.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! || Id: " + id + " || Tipo do objeto: " + Book.class.getName()));
 	
 	}
-
+ 
+	//mostrar todos por categoria
 	public List<Book> findAll(Integer id_cat) {
 		categoryService.findById(id_cat);
 		return repository.findAllByCategory(id_cat);
+	}
+
+	//atualizar livro
+	public Book update(Integer id, Book obj) {
+		Book newObj = findById(id);
+		updateData(newObj, obj);
+		return repository.save(newObj);
+	}
+	
+	//método privado para trazer o liVro atualizado
+	private void updateData(Book newObj, Book obj) {
+		newObj.setTitle(obj.getTitle());
+		newObj.setAutor_name(obj.getAutor_name());
+		newObj.setText(obj.getText());
 	}
 }
