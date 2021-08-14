@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.renata.bookstore.domain.Book;
+import com.renata.bookstore.domain.Category;
 import com.renata.bookstore.repositories.BookRepository;
 import com.renata.bookstore.service.exceptions.ObjectNotFoundException;
 
@@ -44,5 +45,17 @@ public class BookService {
 		newObj.setTitle(obj.getTitle());
 		newObj.setAutor_name(obj.getAutor_name());
 		newObj.setText(obj.getText());
+	}
+
+	//metodo para criar categoria
+	public Book create(Integer id_cat, Book obj) {
+		//setar id como nulo
+		obj.setId(null);
+		//verificar se a categoria existe
+		Category cat = categoryService.findById(id_cat);
+		//fazer com que o livro reconheça a categoria
+		obj.setCategory(cat);
+		//salvar objeto e retornar ele
+		return repository.save(obj);
 	}
 }
