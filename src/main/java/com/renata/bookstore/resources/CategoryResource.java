@@ -14,8 +14,11 @@ package com.renata.bookstore.resources;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,6 +33,7 @@ import com.renata.bookstore.domain.Category;
 import com.renata.bookstore.dtos.CategoryDTO;
 import com.renata.bookstore.service.CategoryService;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping(value = "/categories")
 public class CategoryResource {
@@ -54,7 +58,7 @@ public class CategoryResource {
 	
 	//criar categoria
 	@PostMapping
-	public ResponseEntity<Category> create(@RequestBody Category obj) {
+	public ResponseEntity<Category> create(@Valid @RequestBody Category obj) {
 		obj = service.create(obj);
 		java.net.URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
@@ -63,7 +67,7 @@ public class CategoryResource {
 	
 	//alterar categoria
 	@PutMapping(value ="/{id}")
-	public ResponseEntity<CategoryDTO>update(@PathVariable Integer id, @RequestBody CategoryDTO objDto){
+	public ResponseEntity<CategoryDTO> update(@PathVariable Integer id, @Valid @RequestBody CategoryDTO objDto){
 		Category newObj = service.update(id, objDto);
 		return ResponseEntity.ok().body(new CategoryDTO(newObj));
 	}

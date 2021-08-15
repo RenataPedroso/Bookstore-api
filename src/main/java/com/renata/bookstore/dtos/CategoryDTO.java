@@ -6,6 +6,10 @@ package com.renata.bookstore.dtos;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.NotEmpty;
+
+import org.hibernate.validator.constraints.Length;
+
 import com.renata.bookstore.domain.Category;
 
 public class CategoryDTO implements Serializable {
@@ -13,7 +17,13 @@ public class CategoryDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private Integer id;
+	
+	@NotEmpty(message = "Preencha o campo NAME")
+	@Length(min = 3, max = 100, message = "O Campo NAME precisa ter no mínimo 3 e no máximo 100 caracteres")
 	private String name;
+	
+	@NotEmpty(message = "Preencha o campo DESCRIPTION")
+	@Length(min = 3, max = 300, message = "O Campo DESCRIPTION precisa ter no mínimo 3 e no máximo 100 caracteres")
 	private String description;
 
 	public CategoryDTO() {

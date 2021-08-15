@@ -3,8 +3,11 @@ package com.renata.bookstore.resources;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -21,6 +24,7 @@ import com.renata.bookstore.domain.Book;
 import com.renata.bookstore.dtos.BookDTO;
 import com.renata.bookstore.service.BookService;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping(value = "/books")
 public class BookResources {
@@ -46,21 +50,21 @@ public class BookResources {
 	
 	//put para atualizar todas as informações do livro
 	@PutMapping(value ="/{id}")
-	public ResponseEntity<Book> update(@PathVariable Integer id, @RequestBody Book obj) {
+	public ResponseEntity<Book> update(@PathVariable Integer id, @Valid @RequestBody Book obj) {
 		Book newObj = service.update(id, obj);
 		return ResponseEntity.ok().body(newObj);
 	}
 	
 	//patch para atualizar apenas uma informação do livro
 	@PatchMapping(value ="/{id}")
-	public ResponseEntity<Book> updatePatch(@PathVariable Integer id, @RequestBody Book obj) {
+	public ResponseEntity<Book> updatePatch(@PathVariable Integer id, @Valid @RequestBody Book obj) {
 		Book newObj = service.update(id, obj);
 		return ResponseEntity.ok().body(newObj);
 	}
 	
 	//post para criar o livro
 	@PostMapping
-	public ResponseEntity<Book> create(@RequestParam(value ="category", defaultValue = "0") Integer id_cat, @RequestBody Book obj){
+	public ResponseEntity<Book> create(@RequestParam(value ="category", defaultValue = "0") Integer id_cat, @Valid @RequestBody Book obj){
 		Book newObj = service.create(id_cat, obj);
 		java.net.URI uri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/books/{id}").buildAndExpand(newObj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
