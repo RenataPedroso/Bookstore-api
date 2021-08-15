@@ -58,4 +58,10 @@ public class BookService {
 		//salvar objeto e retornar ele
 		return repository.save(obj);
 	}
+
+	//metodo para deletar livro
+	public void delete(Integer id) {
+		Book obj = findById(id);
+		repository.delete(obj);
+	}
 }
